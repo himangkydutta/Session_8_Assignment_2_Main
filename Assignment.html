@@ -1,0 +1,137 @@
+<!DOCTYPE html> 
+<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
+</script>
+</head>
+<body>
+<h1 style="padding-left: 45%;">MySelfieTech</h1><br><br><br>
+
+	<!--The Home Page having Login and Sign Up Button-->
+	<div id="Home-Page" style="padding-left: 45%;">
+		<button id="btnLogin">Login</button>
+		<button id="btnSignUp">Sign Up</button>
+	</div>
+	
+	<!--Registration Page-->
+	<div id="signup-page" style="visibility:hidden;margin-left: 40%;">
+		<span>Sign Up</span>
+		<form id="frm-sign-up">
+            <input id="name-rgstr" type="text" placeholder="Name" style="margin-bottom: 1%;"><br>
+			<input id="email-rgstr" type="email" placeholder="Email" style="margin-bottom: 1%;"><br>
+			<input id="pass-rgstr" type="password" placeholder="Password" style="margin-bottom: 1%;"><br>
+			<input id="submit-rgstr" type="submit">
+		</form>		
+		<button id="btnBackSignUp" style="margin-left: 15%;">Back</button>
+	</div>
+
+	<!--Login page-->
+       <div id="login-page" style="visibility:hidden;margin-left: 40%;">
+		<span>Login</span>
+		<form id="frm-login">
+            <input id="email-login" type="email" placeholder="Email" style="margin-bottom: 1%;"><br>
+			<input id="pass-login" type="password" placeholder="Password" style="margin-bottom: 1%;"><br>
+			<input id="login-rgstr" type="submit">
+		</form>	
+		<span id="loginErrMsg"></span>
+	    <button id="btnBackLogin" style="margin-left: 15%;">Back</button>
+	</div>
+
+	<!--Welcome Page-->
+        <div id="welcome-page" style="visibility:hidden;align:center-right">
+            <span id="welcome-span">Welcome to </span><span id="welcomeName"></span><br>
+			<button id="btnLogOut">Logout</button>
+	</div>
+
+	<!--start of jquery and Javascript-->
+<script>
+
+	//Logout will navigate to Home Page
+	$("#btnLogOut").on("click",function(){
+		$("#Home-Page").css("visibility", "visible");
+		$("#Home-Page").show();
+		$("#welcome-page").css("visibility", "hidden");
+		$("#welcome-page").hide();
+	});
+	
+	//on click of submit button in Login page
+	$("#login-rgstr").on("click",function(event){
+	event.preventDefault();
+	var emailForRgstr = localStorage.getItem("email");
+	var passForRgstr = localStorage.getItem("password");
+	  
+	//If Email and Password Matched then Login Successfully else Error Message
+	if (  (document.getElementById("email-login").value.trim()==emailForRgstr.trim())  && 
+		(document.getElementById("pass-login").value.trim()==passForRgstr.trim())  )
+	{
+		//logged In Successfully
+		$("#welcome-page").css("visibility", "visible"); 
+		$("#welcome-page #welcomeName").text(localStorage.getItem("signedUpName")); //retrieve the Name and display in welcome page
+		$("#welcome-page").show();    
+
+		//hide all other pages
+		$("#Home-Page").css("visibility", "hidden");   
+		$("#Home-Page").hide();
+		$("#login-page").css("visibility", "hidden");  
+		$("#login-page").hide();
+		$("#signup-page").css("visibility", "hidden");  
+		$("#signup-page").hide();	   
+	}
+	else{	
+	//login failed as username or password is incorrect
+		$("#login-page #loginErrMsg").text("LoginId or password incorrect"); //show the error message in login page
+		$("#login-page").show();
+		$("#Home-Page").hide();
+		$("#signup-page").hide();
+		$("#welcome-page").hide();
+	}
+	});
+	
+	//Show the Login Page
+	$("#btnLogin").on("click", function() {
+	 $("#Home-Page").css("visibility","hidden");
+	 $("#Home-Page").hide();
+	 $("#login-page").css("visibility","visible");
+	 $("#login-page").show();
+	});
+	
+	//Back to Main Page from Sign Up Page
+	$("#btnBackSignUp").on("click",function() {
+	$("#Home-Page").css("visibility","visible");	
+	 $("#Home-Page").show();
+	 $("#login-page").css("visibility","hidden");
+	 $("#login-page").hide();
+	 $("#login-page").css("visibility","hidden");
+	 $("#signup-page").hide();
+	});
+	
+	//Back to Main Page from Login Page
+	$("#btnBackLogin").on("click",function() {
+	$("#Home-Page").css("visibility","visible");	
+	 $("#Home-Page").show();
+	 $("#login-page").css("visibility","hidden");
+	 $("#login-page").hide();
+	 $("#signup-page").css("visibility","hidden");
+	 $("#signup-page").hide();
+	});
+	
+	//Registration Page
+	$("#btnSignUp").on("click", function() {
+	 $("#Home-Page").css("visibility","hidden");	
+	 $("#Home-Page").hide();
+	 $("#signup-page").css("visibility","visible");
+	 $("#signup-page").show();
+	});
+	
+	//On Registration , the values are stor ein local storage
+	$("#submit-rgstr").on("click",function(){
+	  localStorage.setItem("signedUpName",$("#name-rgstr").val());	
+	  localStorage.setItem("email",$("#email-rgstr").val());
+	  localStorage.setItem("password",$("#pass-rgstr").val());	
+	  
+	  $("#Home-Page").css("visibility","visible");
+	  $("#Home-Page").show();
+	  $("#login-page").css("visibility","hidden");
+	  $("#login-page").hide();
+	});
+</script>
+</body>
